@@ -1,3 +1,5 @@
+
+
 export const API_NOTIFICATION_MESSAGE={
     loading:{
         title: 'loading...',
@@ -20,4 +22,8 @@ export const API_NOTIFICATION_MESSAGE={
         message:'Unable to connect with the server. Please check your internet connection'
     }
 
+}
+
+export const SERVICE_URL={
+    userSignup: {user:'/signup',method:'POST' }
 }
