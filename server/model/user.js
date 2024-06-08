@@ -5,7 +5,7 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true
     },
-    usename:{
+    username:{
         type:String,
         required:true,
         unique:true
@@ -16,6 +16,6 @@ const userSchema=mongoose.Schema({
     }
     
 
-})
+});
 const user = mongoose.model('user',userSchema);
 export default user;
