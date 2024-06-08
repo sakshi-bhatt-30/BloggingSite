@@ -1,5 +1,6 @@
 import {Box, Button, TextField, styled,Typography} from '@mui/material';
 import React, { useState } from 'react';
+import { API } from '../../service/api';
 
 const Component = styled(Box)`
     width: 400px;
@@ -46,19 +47,19 @@ const Text = styled(Typography)`
     font-size: 12px;
 `;
 
-// const Error = styled(Typography)`
-//     font-size: 10px;
-//     color: #ff6161;
-//     line-height: 0;
-//     margin-top: 10px;
-//     font-weight: 600;
-// `;
+const Error = styled(Typography)`
+    font-size: 10px;
+    color: #ff6161;
+    line-height: 0;
+    margin-top: 10px;
+    font-weight: 600;
+`;
 
 const signupInitial ={
     name:'',
     username:'',
     password:''
-}
+};
 
 
 
@@ -67,7 +68,8 @@ const Login = () => {
     const imageURL = 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30164225/572.png';
 
     const [account,toggleAccount]= useState('login');
-    const[signup,setSignup]=useState(signupInitial)
+    const[signup,setSignup]=useState(signupInitial);
+    const[error,setError]=useState('');
 
     const toggleSignup = () => {
         account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
@@ -75,9 +77,33 @@ const Login = () => {
     const onInputChange =(e) =>{
         setSignup({...signup, [e.target.name]: e.target.value});
     }
-    const signupUser=()=>{
+    const signupUser= async ()=>{
         
+        if (!signup.name || !signup.username || !signup.password) {
+            setError('All fields are required');
+            return;
+        }
+        let response = await API.userSignup(signup);
+        if(response.isSuccess){
+            setError('');
+            setSignup(signupInitial);
+            toggleAccount('login');
+        }else{
+            setError('Something went wrong');
+        }
 
+        // try {
+        //     let response = await API.userSignup(signup);
+        //     if (response.isSuccess) {
+        //         setError('');
+        //         setSignup(signupInitial);
+        //         toggleAccount('login');
+        //     } else {
+        //         setError('Something went wrong');
+        //     }
+        // } catch (error) {
+        //     setError(error.response?.data?.msg || 'Something went wrong');
+        // }
     }
 
     return ( 
@@ -98,7 +124,7 @@ const Login = () => {
                     <TextField variant="standard" onChange={(e)=>onInputChange(e)} name="name" label='Enter Name' />
                     <TextField variant="standard" onChange={(e)=>onInputChange(e)} name="username" label='Enter Username' />
                     <TextField variant="standard" onChange={(e)=>onInputChange(e)} name="password" label='Enter Password' />
-
+                    {error && <Error> {error}</Error>}
                     <SignupButton onClick={() => signupUser()}>Signup</SignupButton>
                     <Text style={{ textAlign: 'center' }}>OR</Text>
                     <LoginButton variant="contained" onClick={() => toggleSignup()}>Already have an account</LoginButton>

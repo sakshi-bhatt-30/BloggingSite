@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { API_NOTIFICATION_MESSAGE,SERVICE_URL } from '../constants/config';
+import { API_NOTIFICATION_MESSAGE, SERVICE_URL } from '../constants/config';
 
-const API_URL='https://localhost:8000';
+const API_URL='http://localhost:8000'
 
 const axiosInstance= axios.create({
     baseURL: API_URL,
     timeout:10000,
     headers:{
-        "Content-Type":"application/json"
+        "content-type":"application/json"
     }
-})
+});
 
 axiosInstance.interceptors.request.use(
     function(config){
@@ -33,7 +33,7 @@ const processResponse=(response)=>{
         return{isSuccess:true, data:response.data};
     }else{
         return {
-            isFaliure : true,
+            isFailure : true,
             status:response?.status,
             msg: response?.msg,
             code: response?.code
@@ -43,11 +43,21 @@ const processResponse=(response)=>{
 const processError=(error)=>{
     if(error.response){
         //req is made but the server responded with status other than 2.x.x
-        console.log('Error in response',error.toJSON());
-        return{
-            isError: true,
-            msg:API_NOTIFICATION_MESSAGE.responseFailure,
-            code:error.response.status
+        // console.log("Error in response",error.toJSON());
+        // return{
+        //     isError: true,
+        //     msg:API_NOTIFICATION_MESSAGE.responseFailure,
+        //     code:error.response.status
+        // }
+        if (error.response?.status === 403) {
+                    sessionStorage.clear();
+        } else {
+            console.log("ERROR IN RESPONSE: ", error.toJSON());
+            return {
+                isError: true,
+                msg: API_NOTIFICATION_MESSAGE.responseFailure,
+                code: error.response.status
+            }
         }
 
     }else if(error.request){
@@ -75,22 +85,23 @@ const API={};
 for (const[key,value] of Object.entries(SERVICE_URL)){
     API[key]=(body,showUploadProgress,showDownloadProgress)=>
         axiosInstance({
-            method:value.method,
-            url:value.url,
-            data:body,
-            responseType:value.responseType,
+            method: value.method,
+            url: value.url,
+            data: body,
+            responseType: value.responseType,
             onUploadProgress:function(progressEvent){
                 if(showUploadProgress){
-                    let percentcomplete= Math.round((progressEvent.loaded*100/progressEvent.total));
+                    let percentcomplete= Math.round((progressEvent.loaded*100)/progressEvent.total);
                     showUploadProgress(percentcomplete);
                 }
             },
             onDownloadProgress:function(progressEvent){
                 if(showDownloadProgress){
-                    let percentcomplete= Math.round((progressEvent.loaded*100/progressEvent.total));
+                    let percentcomplete= Math.round((progressEvent.loaded*100)/progressEvent.total);
                     showDownloadProgress(percentcomplete);
                 }
             }
-        })
+        });
 }
 export {API};
+

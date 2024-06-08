@@ -25,5 +25,5 @@ export const API_NOTIFICATION_MESSAGE={
 }
 
 export const SERVICE_URL={
-    userSignup: {user:'/signup',method:'POST' }
+    userSignup: { url: '/signup', method: 'POST' }
 }
