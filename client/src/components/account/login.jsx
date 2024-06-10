@@ -1,6 +1,8 @@
 import {Box, Button, TextField, styled,Typography} from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { API } from '../../service/api';
+import { DataContext } from '../../contex/DataProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Component = styled(Box)`
     width: 400px;
@@ -54,6 +56,10 @@ const Error = styled(Typography)`
     margin-top: 10px;
     font-weight: 600;
 `;
+const loginInitial ={
+    username:'',
+    password:''
+};
 
 const signupInitial ={
     name:'',
@@ -68,8 +74,14 @@ const Login = () => {
     const imageURL = 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30164225/572.png';
 
     const [account,toggleAccount]= useState('login');
+
     const[signup,setSignup]=useState(signupInitial);
+
+    const[login,setLogin]=useState(loginInitial);
     const[error,setError]=useState('');
+
+    const { setAccount  } = useContext(DataContext);
+    const navigate= useNavigate();
 
     const toggleSignup = () => {
         account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
@@ -91,19 +103,27 @@ const Login = () => {
         }else{
             setError('Something went wrong');
         }
+    }
+    const onValueChange=(e)=>{
+        setLogin({...login, [e.target.name]: e.target.value});
+    }
 
-        // try {
-        //     let response = await API.userSignup(signup);
-        //     if (response.isSuccess) {
-        //         setError('');
-        //         setSignup(signupInitial);
-        //         toggleAccount('login');
-        //     } else {
-        //         setError('Something went wrong');
-        //     }
-        // } catch (error) {
-        //     setError(error.response?.data?.msg || 'Something went wrong');
-        // }
+    const loginUser= async ()=>{
+        let response = await API.userLogin(login);
+        if(response.isSuccess){
+            setError('');
+            sessionStorage.setItem('accessToken', `Bearer ${response.data.accessToken}`);
+            sessionStorage.setItem('refreshToken', `Bearer ${response.data.refreshToken}`);
+
+            setAccount({ name: response.data.name, username: response.data.username });
+            
+            // isUserAuthenticated(true)
+            // setLogin(loginInitialValues);
+            navigate('/');
+
+        }else{
+            setError('Something went wrong');
+        }
     }
 
     return ( 
@@ -113,9 +133,9 @@ const Login = () => {
                 {
                 account === 'login' ?
                 <Wrapper>
-                    <TextField variant="standard" label='Enter Username'/>
-                    <TextField variant="standard" label="Enter Password"/>
-                    <LoginButton variant="contained" >Login</LoginButton>
+                    <TextField variant="standard" onChange={(e)=>onValueChange(e)} name="username" label='Enter Username'/> 
+                    <TextField variant="standard" onChange={(e)=>onValueChange(e)} name="password" label="Enter Password"/>
+                    <LoginButton variant="contained" onClick={() => loginUser()}>Login</LoginButton>
                     <Text style={{ textAlign: 'center' }}>OR</Text>
                     <SignupButton onClick={() => toggleSignup()}>Sign Up</SignupButton>
                 </Wrapper> 
