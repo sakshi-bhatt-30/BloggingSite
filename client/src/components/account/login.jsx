@@ -69,7 +69,7 @@ const signupInitial ={
 
 
 
-const Login = () => {
+const Login = ({isUserAuthenticated}) => {
     
     const imageURL = 'https://cdn.logojoy.com/wp-content/uploads/2018/05/30164225/572.png';
 
@@ -117,7 +117,7 @@ const Login = () => {
 
             setAccount({ name: response.data.name, username: response.data.username });
             
-            // isUserAuthenticated(true)
+            isUserAuthenticated(true)
             // setLogin(loginInitialValues);
             navigate('/');
 

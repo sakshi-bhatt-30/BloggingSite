@@ -1,7 +1,30 @@
 .App {
   text-align: center;
   
+  
 }
+/* @keyframes change{
+  0%
+  {
+      background-image: url(egame.png);
+  }
+  25%
+  {
+      background-image: url(fashion.png);
+  }
+  50%
+  {
+      background-image: url(music.png);
+  }
+  75%
+  {
+      background-image: url(movie.png);
+  }
+  100%
+  {
+      background-image: url(game.png);
+  }
+} */
 
 /* .App-logo {
   height: 40vmin;
