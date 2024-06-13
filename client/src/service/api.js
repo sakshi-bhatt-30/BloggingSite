@@ -87,7 +87,7 @@ for (const[key,value] of Object.entries(SERVICE_URL)){
         axiosInstance({
             method: value.method,
             url: value.url,
-            data: body,
+            data: value.method === 'DELETE' ? '' : body,
             responseType: value.responseType,
             onUploadProgress:function(progressEvent){
                 if(showUploadProgress){

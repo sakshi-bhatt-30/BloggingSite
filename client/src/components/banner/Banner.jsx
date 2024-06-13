@@ -30,7 +30,9 @@ const Heading = styled(Typography)`
 
 const SubHeading = styled(Typography)`
   font-size: 20px;
-  background: #FFFFFF;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-family: "Times New Roman", Times, serif;
 `;
 
 const styles = ({
@@ -46,7 +48,7 @@ const Banner = () => {
         <div style={styles.app}>
         <Image>
             <Heading>BLOG</Heading>
-            <SubHeading>Code for Interview</SubHeading>
+            <SubHeading>Explore. Learn. Thrive. Dive into our vibrant blogosphere and discover endless inspiration!</SubHeading>
         </Image>
         </div>
     )
