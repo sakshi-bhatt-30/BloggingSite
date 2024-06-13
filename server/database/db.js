@@ -9,7 +9,7 @@ const Connection = async (username,password) =>{
        
        console.log("successfully connected");
     }catch(error){
-        console.log("not connectes",error);
+        console.log("not connected",error);
     }
 }
 export default Connection;
