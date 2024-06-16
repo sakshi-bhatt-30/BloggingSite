@@ -51,48 +51,29 @@ const CreatePost = () => {
     useEffect(() => {
         const getImage = async () => { 
             if(file) {
-                const data = new FormData();
-                data.append("name", file.name);
-                data.append("file", file);
-                
-                const response = await API.uploadFile(data);
-                post.picture = response.data;
+                const formdata = new FormData();
+                formdata.append("name", file.name);
+                formdata.append("file", file);
+              
+                try {
+                    const response = await API.uploadFile(formdata);
+                    setPost(prevPost => ({ ...prevPost, picture: response.data })); 
+                } catch (error) {
+                    console.error("Error uploading file:", error);
+                }
             }
         }
         getImage();
-        post.categories = location.search?.split('=')[1] || 'All';
-        post.username = account.username;
-    }, [file])
-
-
-    // useEffect(() => {
-    //     const getImage = async () => {
-    //         if (file) {
-    //             const data = new FormData();
-    //             data.append("name", file.name);
-    //             data.append("file", file);
-
-    //             try {
-    //                 const response = await API.uploadFile(data);
-    //                 setPost(prevPost => ({ ...prevPost, picture: response.data }));
-    //             } catch (error) {
-    //                 console.error("Error uploading file:", error);
-    //             }
-    //         }
-    //     };
-
-    //     getImage();
-    //     setPost(prevPost => ({
-    //         ...prevPost,
-    //         categories: location.search?.split('=')[1] || 'All',
-    //         username: account.username
-    //     }));
-    // }, [file, location.search, account.username]);
-
-   
+        setPost(prevPost => ({
+            ...prevPost,
+            categories: location.search?.split('=')[1] || 'All',    
+            username: account.username 
+        }));
+    }, [file, location.search, account.username]);
 
     
-    const url = post.picture ? post.picture :'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
+    const url = post.picture 
+    ? post.picture :'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
     
     const handleChange = (e) => {
         setPost({ ...post, [e.target.name]: e.target.value });
@@ -104,12 +85,12 @@ const CreatePost = () => {
     <Container>
     <Image src={url} alt="post" />
     <StyledFormControl>
-        <label htmlFor="fileInput">
+        <label  className="form-label" htmlFor='input-file'>
             <Add fontSize="large" color="action" />
         </label>
         <input
             type="file"
-            id="fileInput"
+            id="input-file"
             style={{ display: "none" }}
             onChange={(e) => setFile(e.target.files[0])}
         />
@@ -122,9 +103,9 @@ const CreatePost = () => {
         name='description'
         onChange={(e) => handleChange(e)}
     />
-</Container>
+    </Container>
     
-     );
+    );
     
 }
  

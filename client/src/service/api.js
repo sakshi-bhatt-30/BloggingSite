@@ -8,7 +8,9 @@ const axiosInstance= axios.create({
     timeout:10000,
     headers:{
         "content-type":"application/json"
+        
     }
+   
 });
 
 axiosInstance.interceptors.request.use(
@@ -42,13 +44,6 @@ const processResponse=(response)=>{
 
 const processError=(error)=>{
     if(error.response){
-        //req is made but the server responded with status other than 2.x.x
-        // console.log("Error in response",error.toJSON());
-        // return{
-        //     isError: true,
-        //     msg:API_NOTIFICATION_MESSAGE.responseFailure,
-        //     code:error.response.status
-        // }
         if (error.response?.status === 403) {
                     sessionStorage.clear();
         } else {
@@ -87,8 +82,9 @@ for (const[key,value] of Object.entries(SERVICE_URL)){
         axiosInstance({
             method: value.method,
             url: value.url,
-            data: value.method === 'DELETE' ? '' : body,
+            data: body,
             responseType: value.responseType,
+            
             onUploadProgress:function(progressEvent){
                 if(showUploadProgress){
                     let percentcomplete= Math.round((progressEvent.loaded*100)/progressEvent.total);
