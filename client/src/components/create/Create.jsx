@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { styled, InputBase, FormControl, Container, Button, TextareaAutosize  } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
-import {  useLocation } from 'react-router-dom';
-// useNavigate,
+import {  useLocation, useNavigate } from 'react-router-dom';
 
 import { API } from '../../service/api.js';
 import { DataContext } from '../../contex/DataProvider';
@@ -42,11 +41,16 @@ const initialPost = {
 }
 
 const CreatePost = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [post, setPost] = useState(initialPost);
     const [file, setFile] = useState('');
-    const location = useLocation();
     const { account } = useContext(DataContext);
+
+    const url = post.picture 
+    ? post.picture :'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
+    
 
     useEffect(() => {
         const getImage = async () => { 
@@ -72,9 +76,13 @@ const CreatePost = () => {
     }, [file, location.search, account.username]);
 
     
-    const url = post.picture 
-    ? post.picture :'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
     
+    const savePost = async () => {
+        await API.createPost(post);
+        navigate('/');
+    }
+
+
     const handleChange = (e) => {
         setPost({ ...post, [e.target.name]: e.target.value });
     }
@@ -95,7 +103,7 @@ const CreatePost = () => {
             onChange={(e) => setFile(e.target.files[0])}
         />
         <InputTextField onChange={(e) => handleChange(e)} name='title' placeholder="Title" />
-        <Button variant="contained" color="primary">Publish</Button>
+        <Button variant="contained" color="primary" onClick={() => savePost()} >Publish</Button>
     </StyledFormControl>
     <Textarea
         minRows={5}
