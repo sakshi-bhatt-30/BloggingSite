@@ -45,7 +45,7 @@ const CreatePost = () => {
     const location = useLocation();
 
     const [post, setPost] = useState(initialPost);
-    const [file, setFile] = useState('');
+    const [file, setFile] = useState();
     const { account } = useContext(DataContext);
 
     const url = post.picture 
@@ -85,6 +85,7 @@ const CreatePost = () => {
 
     const handleChange = (e) => {
         setPost({ ...post, [e.target.name]: e.target.value });
+        
     }
     
 
