@@ -17,15 +17,16 @@ conn.once('open', () => {
 
 export const uploadImage = (request,response) => {
     if (!request.file) {
-        console.error('No file found in the request');
+
         return response.status(404).json("File not found");
     }
 
-    console.log('File uploaded successfully:', request.file);
+    // console.log('File uploaded successfully:', request.file);
 
     const imageUrl = `${url}/file/${request.file.filename}`;
-    return response.status(200).json({ filePath: imageUrl });
+    return response.status(200).json({ imageUrl });
 }
+
 
 export const getImage = async (request, response) => {
     try {   
