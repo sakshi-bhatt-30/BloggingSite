@@ -4,6 +4,7 @@ import { Instagram, Email } from '@mui/icons-material';
 const Banner = styled(Box)`
     background-image: url(http://mrtaba.ir/image/bg2.jpg);
     width: 100%;
+    margin-top:30px;
     height: 50vh;
     background-position: left 0px top -100px;
     background-size: cover;
@@ -18,6 +19,7 @@ const Wrapper = styled(Box)`
 
 const Text = styled(Typography)`
     color: #878787;
+    
 `;
 
 
@@ -29,11 +31,11 @@ const Contact = () => {
                 <Typography variant="h3">Getting in touch is easy!</Typography>    
                 <Text variant="h5">
                     Reach out to me on
-                    <Link href="https://www.instagram.com/codeforinterview/" color="inherit" target="_blank">
+                    <Link href="https://www.instagram.com/" color="inherit" target="_blank">
                         <Instagram/>
                     </Link>
                     or send me an Email 
-                    <Link href="mailto:codeforinterview@gmail.com?Subject=This is a subject" target="_blank" color="inherit">
+                    <Link href="mailto:.....@gmail.com?Subject=This is a subject" target="_blank" color="inherit">
                         <Email />
                     </Link>.
                 </Text>
