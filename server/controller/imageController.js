@@ -15,18 +15,15 @@ conn.once('open', () => {
     gfs.collection('fs');
 });
 
-export const uploadImage = (request,response) => {
-    if (!request.file) {
 
+export const uploadImage = (request, response) => {
+    if(!request.file) 
         return response.status(404).json("File not found");
-    }
-
-    // console.log('File uploaded successfully:', request.file);
-
+    
     const imageUrl = `${url}/file/${request.file.filename}`;
-    return response.status(200).json({ imageUrl });
-}
 
+    response.status(200).json(imageUrl);    
+}
 
 export const getImage = async (request, response) => {
     try {   
@@ -39,4 +36,3 @@ export const getImage = async (request, response) => {
         response.status(500).json({ msg: error.message });
     }
 }
-
