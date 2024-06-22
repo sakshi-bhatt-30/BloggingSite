@@ -7,10 +7,10 @@ const API_URL='http://localhost:8000'
 const axiosInstance= axios.create({
     baseURL: API_URL,
     timeout:10000,
-    headers:{
-        "content-type":"application/json"
-        
-    }
+    headers: {
+        "Accept": "application/json, form-data", 
+        "Content-Type": "application/json"
+}
    
 });
 
@@ -88,7 +88,7 @@ for (const[key,value] of Object.entries(SERVICE_URL)){
         axiosInstance({
             method: value.method,
             url: value.url,
-            data: body,
+            data: value.method === 'DELETE' ? {} : body,
             responseType: value.responseType,
             headers: {
                 authorization: getAccessToken(),
